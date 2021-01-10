@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.emi2c.mybatis.common.BaseMapper">
+
+    <sql id="common_column">
+
+    </sql>
+
+    <resultMap id="BaseResultMap" type="com.emi2c.mybatis.entity.User">
+
+    </resultMap>
+
+    <insert id="insert" parameterType="java.util.Map">
+        INSERT INTO ${TABLE_NAME} (
+        <foreach collection="COLUMNS" item="item" index="index" separator=",">
+            ${item}
+        </foreach>
+        ) values (
+        <foreach collection="VALUES" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+        )
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.Map">
+        INSERT INTO ${TABLE_NAME} (
+        <foreach collection="COLUMNS" item="item" index="index" separator=",">
+            ${item}
+        </foreach>
+        ) values (
+        <foreach collection="VALUES" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+        )
+    </insert>
+
+
+    <delete id="delete" parameterType="java.util.Map">
+        DELETE FROM ${TABLE_NAME} WHERE ${KEY_ID} = #{KEY_VALUE}
+    </delete>
+
+    <delete id="batchDelete" parameterType="java.util.Map">
+        DELETE FROM ${TABLE_NAME} WHERE ${KEY_ID} IN
+        <foreach collection="KEY_VALUE" item="ID" index="index" separator=",">
+            #{ID}
+        </foreach>
+    </delete>
+
+    <update id="update" parameterType="java.util.Map">
+        UPDATE ${TABLE_NAME} SET
+        <foreach collection="DATA" item="item" index="index" separator=",">
+            ${item.COLUMN} = #{item.COL_VALUE}
+        </foreach>
+        WHERE ${KEY_ID} = #{KEY_VALUE}
+    </update>
+
+    <update id="batchUpdate" parameterType="java.util.Map">
+        UPDATE ${TABLE_NAME} SET
+        <foreach collection="DATA" item="item" index="index" separator=",">
+            ${item.COLUMN} = #{item.COL_VALUE}
+        </foreach>
+        WHERE ${KEY_ID} IN
+        <foreach collection="KEY_VALUE" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="findOneById" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM ${TABLE_NAME} WHERE ${KEY_ID} = #{KEY_VALUE}
+    </select>
+
+    <select id="findAllByCondition" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM ${TABLE_NAME} WHERE
+        <foreach collection="DATA" item="item" index="index" separator=",">
+            AND ${item.COLUMN} = #{item.COL_VALUE}
+        </foreach>
+        ORDER BY #{ORDER_KEY} #{ORDER_SEQ}
+        LIMIT #{PAGE_INDEX}, #{PAGE_SIZE}
+    </select>
+
+</mapper>

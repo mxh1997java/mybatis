@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.emi2c.mybatis.mapper.UserMapper">
+
+    <sql id="common_column">
+        id,
+        account,
+        username,
+        password,
+        realName,
+        age,
+        sex,
+        phone,
+        address,
+        description,
+        creator,
+        createTime
+    </sql>
+
+    <resultMap id="BaseResultMap" type="com.emi2c.mybatis.entity.User">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="account" jdbcType="VARCHAR" property="account"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="realName" jdbcType="VARCHAR" property="realName"/>
+        <result column="age" jdbcType="INTEGER" property="age"/>
+        <result column="sex" jdbcType="VARCHAR" property="sex"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="createTime" jdbcType="DATE" property="createTime"/>
+    </resultMap>
+
+    <select id="findOneById" parameterType="java.lang.Long" resultType="com.emi2c.mybatis.entity.User">
+        select
+        <include refid="common_column"/>
+        from system_user
+        where
+        1 != 1 or
+        and isDelete=0
+        and isActive=0
+        <if test="id != null and id != ''">
+            id = #{id}
+        </if>
+    </select>
+
+    <select id="findAllByCondition" parameterType="com.emi2c.mybatis.command.Condition"
+            resultType="com.emi2c.mybatis.entity.User">
+        select
+        <include refid="common_column"/>
+        from system_user
+        <where>
+            <if test="id != null">
+                and id=#{id}
+            </if>
+            <if test="isDelete != null">
+                and isDelete=#{isDelete}
+            </if>
+            <if test="isActive != null">
+                and isActive=#{isActive}
+            </if>
+            <if test="beginTime!=null">
+                and createTime &gt;=#{beginTime}
+            </if>
+            <if test="endTime!=null">
+                and createTime &lt;=#{endTime}
+            </if>
+        </where>
+        order by createTime desc
+        limit #{index},#{pageSize}
+    </select>
+
+    <!--返回创建数据id-->
+    <insert id="addUser" parameterType="com.emi2c.mybatis.entity.User" useGeneratedKeys="true" keyProperty="id">
+        insert into system_user(account,username,password,description,creator,createTime)
+        values(#{account},#{username}, #{password},#{description}, #{creator},#{createTime})
+    </insert>
+
+    <insert id="insert" parameterType="com.emi2c.mybatis.entity.User">
+        insert into system_user(account,username,password,description,creator,createTime)
+        values(#{account},#{username}, #{password},#{description}, #{creator},#{createTime})
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into system_user
+        (account, username, password, description, creator, createTime)
+        values
+        <foreach collection="userList" item="user" index="index" separator=",">
+            (
+            #{user.account},
+            #{user.username},
+            #{user.password},
+            #{user.description},
+            #{user.creator},
+            #{user.createTime}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete from system_user
+        where id = #{id}
+        and isDelete=0
+        and isActive=0
+    </delete>
+
+    <delete id="deleteByIds" parameterType="java.util.Set">
+        delete from system_user
+        where id in
+        <foreach item="id" collection="idList" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        and isDelete=0
+        and isActive=0
+    </delete>
+
+    <update id="updateOneById" parameterType="com.emi2c.mybatis.entity.User">
+        update system_user
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="age != 0">
+                age = #{age},
+            </if>
+            <if test="sex != 0">
+                sex = #{sex},
+            </if>
+            <if test="realName != 0">
+                realName = #{realName}
+            </if>
+        </set>
+        where id = #{id}
+        and isDelete=0
+        and isActive=0
+    </update>
+
+    <update id="updateOneByIds" parameterType="com.emi2c.mybatis.entity.User">
+        update system_user
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="age != null and age != 0 and age &lt; 120">
+                age = #{age},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="realName != null">
+                realName = #{realName}
+            </if>
+            <if test="editor != null">
+                editor = #{editor}
+            </if>
+            <if test="editTime != null">
+                editTime = #{editTime}
+            </if>
+        </set>
+        where id in
+        <foreach collection="idList" index="index" item="id" separator="," open="(" close=")">
+            #{id,jdbcType=BIGINT}
+        </foreach>
+        and isDelete=0
+        and isActive=0
+    </update>
+
+</mapper>
