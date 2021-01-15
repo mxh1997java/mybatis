@@ -172,4 +172,37 @@
         and isActive=0
     </update>
 
+    <select id="findByUsername" parameterType="java.lang.String">
+        select
+        <include refid="comm"/>
+        from system_user where username=#{username}
+    </select>
+
+    <select id="findByCode" parameterType="java.lang.String">
+        select
+        <include refid="common_column"/>
+        from system_user where code=#{code}
+    </select>
+
+    <select id="findTotal" parameterType="com.emi2c.mybatis.command.Condition">
+        select count(id) from system_user
+        <where>
+            <if test="id != null">
+                and id=#{id}
+            </if>
+            <if test="isDelete != null">
+                and isDelete=#{isDelete}
+            </if>
+            <if test="isActive != null">
+                and isActive=#{isActive}
+            </if>
+            <if test="beginTime!=null">
+                and createTime &gt;=#{beginTime}
+            </if>
+            <if test="endTime!=null">
+                and createTime &lt;=#{endTime}
+            </if>
+        </where>
+    </select>
+
 </mapper>

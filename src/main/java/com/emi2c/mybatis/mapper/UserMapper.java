@@ -62,4 +62,25 @@ public interface UserMapper {
      */
     List<Diary> findAllByCondition(Condition condition);
 
+    /**
+     * 根据用户名查询用户信息
+     * @param username
+     * @return
+     */
+    User findByUsername(String username);
+
+    /**
+     * 根据用户编号查询用户信息
+     * @param code
+     * @return
+     */
+    User findByCode(String code);
+
+    /**
+     * 统计数量
+     * @param condition
+     * @return
+     */
+    int findTotal(Condition condition);
+
 }

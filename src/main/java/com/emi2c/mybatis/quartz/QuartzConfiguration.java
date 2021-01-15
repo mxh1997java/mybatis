@@ -18,8 +18,6 @@ import java.io.IOException;
 public class QuartzConfiguration {
 
     @Autowired
-    private DataSource dataSource;
-    @Autowired
     private TaskJobFactory jobFactory;
 
     @Bean(name = "SchedulerFactory")
