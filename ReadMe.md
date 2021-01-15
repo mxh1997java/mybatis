@@ -17,3 +17,7 @@
 #### 1. Security安全框架
 #### 2. Activiti审批流程
 #### 3. 全局异常处理
+
+### 三、教程：
+Security安全框架：https://www.cnblogs.com/xifengxiaoma/p/11106220.html
+gitee地址：https://gitee.com/liuge1988/spring-boot-demo

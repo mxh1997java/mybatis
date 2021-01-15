@@ -1,9 +1,11 @@
 package com.emi2c.mybatis.dto;
 
+import com.emi2c.mybatis.common.BaseServiceImpl;
+
 /**
  * 返回给前端的对象
  */
-public class UserDTO {
+public class UserDTO extends BaseEntity {
 
     private Long id;
     private String username;

@@ -21,6 +21,18 @@ spring:
       min-idle: 10
     timeout: 1000
 
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
+  activiti:
+    database-schema: ACTIVITI
+    database-schema-update: true
+    db-history-used: true
+    history-level: full
+
   mail:
     host: smtp.qq.com
     username: 2485460305@qq.com
@@ -41,3 +53,12 @@ spring:
 mybatis:
   typeAliasesPackage: com.emi2c.mybatis.entity
   mapperLocations: classpath:mapping/*.xml
+
+# httpclient
+http:
+  maxTotal: 100
+  defaultMaxPerRoute: 20
+  connectTimeout: 5000
+  connectionRequestTimeout: 5000
+  socketTimeout: 10000
+  staleConnectionCheckEnabled: true

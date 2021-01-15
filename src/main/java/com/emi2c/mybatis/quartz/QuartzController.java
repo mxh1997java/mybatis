@@ -15,6 +15,7 @@ public class QuartzController {
         QuartzJobManager.getInstance().addJob(DemoQuartz.class, "demo", "test_group", "*/55 * * * * ?");
         QuartzJobManager.getInstance().addJob(QueryQuartz.class, "query", "test_group", "*/10 * * * * ?");
         QuartzJobManager.getInstance().addJob(OperatingQuartz.class, "operating", "test_group", "*/10 * * * * ?");
+        QuartzJobManager.getInstance().addJob(MailQuartz.class, "mail", "test_group", "*/30 * * * * ?");
     }
 
 }
